@@ -1,27 +1,20 @@
-//created file > middleware.js
-const express=require("express")
+const express = require("express")
+const dbConnect= require("./mongodb")
 const app=express()
-const reqFilter = require("./middleware");
-const route=express.Router()
 
-route.use(reqFilter)
+app.use(express.json())
 
-app.get("", (req,res)=>{
-  res.send("Welcome Page")
+app.get("/",async (req, res)=>{
+  let data=await dbConnect()
+  data=await data.find().toArray()
+  res.send(data)
 })
 
-route.get("/users",(req,res)=>{
-  res.send("This is user page!")
+app.post("/",async (req, res)=>{
+  // console.log(req.body)
+  let data=await dbConnect()
+  let result=await data.insertOne(req.body)
+  res.send(result)
 })
-
-app.get("/about", (req, res)=>{
-  res.send("This is about page!")
-})
-
-app.get("/contact", (req, res) => {
-  res.send("This is Contact page!");
-});
-
-app.use("/",route)
 
 app.listen(5005)
