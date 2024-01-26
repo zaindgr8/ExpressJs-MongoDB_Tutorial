@@ -19,13 +19,15 @@ res.send(result)
 app.put("/:name",async (req, res)=>{
   // console.log(req.body)
   let data=await dbConnect()
-  let result=await data.updateOne(
+  let result = await data.updateOne(
     // {name:"CP"},
     // {name:req.body.name},
-    {name:req.params.name},
-    {$set:req.body})
+    //  {$set:{price:2005}}
+    { name: req.params.name },
+    { $set: req.body }
+  )
   res.send({result:"update"})
 })
 
 app.listen(5005)
-//add local host @Postman @5005/:name 
+//add local host @Postman @5005/name
